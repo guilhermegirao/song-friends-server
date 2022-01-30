@@ -9,13 +9,14 @@ const routes = Router();
 
 routes.get("/login", AuthController.login);
 routes.get("/login/callback", AuthController.loginCallback);
+routes.post("/login/guest", AuthController.loginGuest);
+routes.post("/register/guest", AuthController.createGuest);
 
 routes.get(
   "/match/:id/find/by/user-logged",
   authenticate,
   MatchController.findByIdUserLogged
 );
-routes.delete("/match/:id", authenticate, MatchController.delete);
 routes.post("/match/decline", authenticate, MatchController.declineSuggestion);
 routes.get(
   "/matches/find/by/user-logged",

@@ -16,6 +16,11 @@ const userSchema = new Schema<IUser>(
       unique: true,
       select: false,
     },
+    password: {
+      type: String,
+      required: false,
+      select: false,
+    },
     artists: {
       type: [String],
       required: true,
