@@ -51,14 +51,16 @@ export default {
       const genres = [...new Set(genresList)];
 
       const user = await User.findOne({ spotifyId }).select("+spotifyId");
+      const avatar = me?.body?.images?.[0]?.url || "";
 
       if (user) {
-        const { name, _id, avatar = "" } = user;
+        const { name, _id } = user;
         const token = generateToken(_id);
 
         await User.updateOne(
           { spotifyId },
           {
+            avatar,
             artists,
             genres,
           }
@@ -66,6 +68,7 @@ export default {
 
         const data = Base64.encode(
           JSON.stringify({
+            _id,
             name,
             avatar,
             token,
@@ -75,11 +78,10 @@ export default {
         res.redirect(`${process.env.FRONTEND_URI}?${qs.stringify({ data })}`);
       } else {
         const spotifyName = me?.body?.display_name;
-        const spotifyAvatar = me?.body?.images?.[0]?.url || "";
 
         const newUser = await User.create({
           name: spotifyName,
-          avatar: spotifyAvatar,
+          avatar,
           genres,
           spotifyId,
           artists,
@@ -89,8 +91,9 @@ export default {
 
         const data = Base64.encode(
           JSON.stringify({
+            _id: newUser?._id,
             name: spotifyName,
-            avatar: spotifyAvatar,
+            avatar,
             token,
           })
         );
@@ -98,7 +101,7 @@ export default {
         res.redirect(`${process.env.FRONTEND_URI}?${qs.stringify({ data })}`);
       }
     } catch (error) {
-      return res.status(400).json({ error: "Falha ao entrar!" });
+      return res.status(400).json({ error });
     }
   },
 };

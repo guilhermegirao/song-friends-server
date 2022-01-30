@@ -6,6 +6,7 @@ interface IMatch {
   success: Boolean;
   similar_artists: Array<string>;
   similar_genres: Array<string>;
+  updatedAt?: Date;
 }
 
 export default IMatch;
