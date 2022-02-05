@@ -9,9 +9,7 @@ import spotifyApi from "../utils/spotifyApi";
 import encryptPassword from "../utils/encryptPassword";
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.AUTH_SECRET as string, {
-    expiresIn: "1d",
-  });
+  return jwt.sign({ id }, process.env.AUTH_SECRET as string);
 };
 
 export default {
